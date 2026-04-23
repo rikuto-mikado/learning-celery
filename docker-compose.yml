@@ -4,11 +4,12 @@ services:
   
   worker:
     build: .
-    command: celery -A tasks worker --loglevel=info
+    command: celery -A celery_app.main worker --loglevel=info
     volumes:
       - .:/app
     environment:
       - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
     depends_on:
       - redis
   
@@ -18,6 +19,7 @@ services:
       - .:/app
     environment:
       - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
     depends_on:
       - redis
     tty: true
